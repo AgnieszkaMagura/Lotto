@@ -93,5 +93,10 @@ public class AdjustableClock extends Clock {
         setClockToLocalDateTime(localDateTime);
     }
 
+    public void plusMinutes(int minutes) {
+        Duration offset = Duration.ofHours(minutes);
+        advanceInTimeBy(offset);
+    }
+
 }
 

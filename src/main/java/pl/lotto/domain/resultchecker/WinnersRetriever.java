@@ -14,7 +14,7 @@ class WinnersRetriever {
         return allTicketsByDate.stream()
                 .map(ticket -> {
                     Set<Integer> hitNumbers = calculateHits(winningNumbers, ticket);
-                    return buildPlayer(ticket, hitNumbers);
+                    return buildResult(ticket, hitNumbers);
                 })
                 .toList();
     }
@@ -25,7 +25,7 @@ class WinnersRetriever {
                 .collect(Collectors.toSet());
     }
 
-    private Player buildPlayer(Ticket ticket, Set<Integer> hitNumbers) {
+    private Player buildResult(Ticket ticket, Set<Integer> hitNumbers) {
         Player.PlayerBuilder builder = Player.builder();
         if (isWinner(hitNumbers)) {
             builder.isWinner(true);
