@@ -29,7 +29,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
             1000);
 
     @Test
-    void should_return_null_numbers_when_fault_connection_reset_by_peer() {
+    void should_throw_exception_500_when_fault_connection_reset_by_peer() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -47,7 +47,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
 
 
     @Test
-    void should_return_null_numbers_when_fault_empty_response() {
+    void should_throw_exception_500_when_fault_empty_response() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -64,7 +64,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_null_numbers_when_fault_malformed_response_chunk() {
+    void should_throw_exception_500_when_fault_malformed_response_chunk() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -80,7 +80,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_null_numbers_when_fault_random_data_then_close() {
+    void should_throw_exception_500_when_fault_random_data_then_close() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -97,7 +97,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_zero_job_offers_when_status_is_204_no_content() {
+    void should_throw_exception_204_when_status_is_204_no_content() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -105,7 +105,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
                         .withHeader(CONTENT_TYPE_HEADER_KEY, APPLICATION_JSON_CONTENT_TYPE_VALUE)
                         .withBody("""
                                 [1, 2, 3, 4, 5, 6, 82, 82, 83, 83, 86, 57, 10, 81, 53, 93, 50, 54, 31, 88, 15, 43, 79, 32, 43]
-                                          """.trim()
+                                """.trim()
                         )));
 
         // when
@@ -117,7 +117,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_zero_job_offers_when_response_delay_is_5000_ms_and_client_has_1000ms_read_timeout() {
+    void should_throw_exception_500_when_response_delay_is_5000_ms_and_client_has_1000ms_read_timeout() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -125,7 +125,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
                         .withHeader(CONTENT_TYPE_HEADER_KEY, APPLICATION_JSON_CONTENT_TYPE_VALUE)
                         .withBody("""
                                 [1, 2, 3, 4, 5, 6, 82, 82, 83, 83, 86, 57, 10, 81, 53, 93, 50, 54, 31, 88, 15, 43, 79, 32, 43]
-                                          """.trim()
+                                """.trim()
                         )
                         .withFixedDelay(5000)));
 
@@ -138,7 +138,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_response_not_found_status_exception_when_http_service_returning_not_found_status() {
+    void should_throw_exception_404_when_http_service_returning_not_found_status() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
@@ -155,7 +155,7 @@ public class RandomNumberGeneratorRestTemplateErrorsIntegrationTest {
     }
 
     @Test
-    void should_return_response_unauthorized_status_exception_when_http_service_returning_unauthorized_status() {
+    void should_throw_exception_401_when_http_service_returning_unauthorized_status() {
         // given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
                 .willReturn(WireMock.aResponse()
