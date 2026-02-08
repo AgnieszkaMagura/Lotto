@@ -25,7 +25,7 @@ class ResultCheckerFacadeTest {
     @Test
     public void it_should_generate_all_players_with_correct_message() {
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2022, 12, 17, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2026, 2, 7, 12, 0, 0);
         when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .build());
@@ -49,7 +49,7 @@ class ResultCheckerFacadeTest {
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration()
                 .resultCheckerFacade(winningNumbersGeneratorFacade, numberReceiverFacade, playerRepository);
         //when
-        PlayersDto playersDto = resultCheckerFacade.generateWinners();
+        PlayersDto playersDto = resultCheckerFacade.generateResults();
         //then
         List<ResultDto> results = playersDto.results();
         ResultDto resultDto = ResultDto.builder()
@@ -88,7 +88,7 @@ class ResultCheckerFacadeTest {
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration()
                 .resultCheckerFacade(winningNumbersGeneratorFacade, numberReceiverFacade, playerRepository);
         //when
-        PlayersDto playersDto = resultCheckerFacade.generateWinners();
+        PlayersDto playersDto = resultCheckerFacade.generateResults();
         //then
         String message = playersDto.message();
         assertThat(message).isEqualTo("Winners failed to retrieve");
@@ -104,7 +104,7 @@ class ResultCheckerFacadeTest {
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration()
                 .resultCheckerFacade(winningNumbersGeneratorFacade, numberReceiverFacade, playerRepository);
         //when
-        PlayersDto playersDto = resultCheckerFacade.generateWinners();
+        PlayersDto playersDto = resultCheckerFacade.generateResults();
         //then
         String message = playersDto.message();
         assertThat(message).isEqualTo("Winners failed to retrieve");
@@ -114,7 +114,7 @@ class ResultCheckerFacadeTest {
     @Test
     public void it_should_generate_result_with_correct_credentials() {
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2022, 12, 17, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2026, 2, 7, 12, 0, 0);
         when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .build());
@@ -138,10 +138,10 @@ class ResultCheckerFacadeTest {
         );
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration()
                 .resultCheckerFacade(winningNumbersGeneratorFacade, numberReceiverFacade, playerRepository);
-        resultCheckerFacade.generateWinners();
+        resultCheckerFacade.generateResults();
         //when
 
-        ResultDto resultDto = resultCheckerFacade.findByHash(hash);
+        ResultDto resultDto = resultCheckerFacade.findByTicketId(hash);
         //then
         ResultDto expectedResult = ResultDto.builder()
                 .hash(hash)
