@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 public class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
@@ -35,6 +38,13 @@ public class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     public ResultCheckerFacade resultCheckerFacade;
+
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        registry.add("lotto.number-generator.http.client.config.port", () -> wireMockServer.getPort());
+        registry.add("lotto.number-generator.http.client.config.uri", () -> WIRE_MOCK_HOST);
+    }
 
     @Test
     public void should_user_win_and_system_should_generate_winners() throws Exception {
