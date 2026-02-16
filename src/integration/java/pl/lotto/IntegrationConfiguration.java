@@ -17,7 +17,8 @@ public class IntegrationConfiguration {
     @Bean
     @Primary
     AdjustableClock clock() {
-        return AdjustableClock.ofLocalDateAndLocalTime(LocalDate.of(2026, 2, 4), LocalTime.of(10, 0), ZoneId.systemDefault());
+        return AdjustableClock.ofLocalDateAndLocalTime(LocalDate.
+                of(2026, 2, 4), LocalTime.of(10, 0), ZoneId.systemDefault());
     }
 
 }
