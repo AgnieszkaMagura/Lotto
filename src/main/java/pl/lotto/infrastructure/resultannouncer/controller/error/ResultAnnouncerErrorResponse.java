@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.resultannouncer.controller.erro;
+package pl.lotto.infrastructure.resultannouncer.controller.error;
 
 import org.springframework.http.HttpStatus;
 

@@ -7,9 +7,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableScheduling;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacadeConfigurationProperties;
 import pl.lotto.infrastructure.numbergenerator.http.RandomNumberGeneratorRestTemplateConfigurationProperties;
+import pl.lotto.infrastructure.security.jwt.JwtConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({WinningNumbersGeneratorFacadeConfigurationProperties.class, RandomNumberGeneratorRestTemplateConfigurationProperties.class})
+@EnableConfigurationProperties({WinningNumbersGeneratorFacadeConfigurationProperties.class,
+        RandomNumberGeneratorRestTemplateConfigurationProperties.class, JwtConfigurationProperties.class})
 @EnableScheduling
 @EnableMongoRepositories
 public class LottoSpringBootApplication {

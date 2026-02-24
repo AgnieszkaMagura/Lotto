@@ -24,3 +24,10 @@ lotto:
           port: 80
           connectionTimeout: 5000
           readTimeout: 5000
+
+jwt:
+  authentication:
+    secretKey: ${SECRET_KEY}
+    expirationDays: 30
+    issuer: lotto-backend-service
+

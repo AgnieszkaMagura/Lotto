@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.data.annotation.Id;
 
 @Builder
-record Player(
+public record Player(
         @Id
         String hash,
         Set<Integer> numbers,

@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.resultannouncer.controller.erro;
+package pl.lotto.infrastructure.resultannouncer.controller.error;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

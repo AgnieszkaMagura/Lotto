@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.ResultDto;
+import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 
 import static pl.lotto.domain.resultannouncer.MessageResponse.*;
@@ -27,13 +26,13 @@ public class ResultAnnouncerFacade {
                 return new ResultAnnouncerResponseDto(ResultMapper.mapToDto(resultResponseCached.get()), ALREADY_CHECKED.info);
             }
         }
-        ResultDto resultDto = resultCheckerFacade.findByTicketId(hash);
-        if (resultDto == null) {
+        PlayerDto playerDto = resultCheckerFacade.findByTicketId(hash);
+        if (playerDto == null) {
             return new ResultAnnouncerResponseDto(null, HASH_DOES_NOT_EXIST_MESSAGE.info);
         }
-        ResponseDto responseDto = buildResponseDto(resultDto);
+        ResponseDto responseDto = buildResponseDto(playerDto);
         responseRepository.save(buildResponse(responseDto));
-        if (responseRepository.existsById(hash) && !isAfterResultAnnouncementTime(resultDto)) {
+        if (responseRepository.existsById(hash) && !isAfterResultAnnouncementTime(playerDto)) {
             return new ResultAnnouncerResponseDto(responseDto, WAIT_MESSAGE.info);
         }
         if (resultCheckerFacade.findByTicketId(hash).isWinner()) {
@@ -52,18 +51,18 @@ public class ResultAnnouncerFacade {
                 .build();
     }
 
-    private static ResponseDto buildResponseDto(ResultDto resultDto) {
+    private static ResponseDto buildResponseDto(PlayerDto playerDto) {
         return ResponseDto.builder()
-                .hash(resultDto.hash())
-                .numbers(resultDto.numbers())
-                .hitNumbers(resultDto.hitNumbers())
-                .drawDate(resultDto.drawDate())
-                .isWinner(resultDto.isWinner())
+                .hash(playerDto.hash())
+                .numbers(playerDto.numbers())
+                .hitNumbers(playerDto.hitNumbers())
+                .drawDate(playerDto.drawDate())
+                .isWinner(playerDto.isWinner())
                 .build();
     }
 
-    private boolean isAfterResultAnnouncementTime(ResultDto resultDto) {
-        LocalDateTime announcementDateTime = resultDto.drawDate();
+    private boolean isAfterResultAnnouncementTime(PlayerDto playerDto) {
+        LocalDateTime announcementDateTime = playerDto.drawDate();
         return LocalDateTime.now(clock).isAfter(announcementDateTime);
     }
 }

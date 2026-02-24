@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.ResultDto;
+import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -28,14 +28,14 @@ class ResultAnnouncerFacadeTest {
         String hash = "123";
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
                 .resultAnnouncerFacade(resultCheckerFacade, responseRepository, Clock.systemUTC());
-        ResultDto resultDto = ResultDto.builder()
+        PlayerDto playerDto = PlayerDto.builder()
                 .hash("123")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of())
                 .drawDate(drawDate)
                 .isWinner(false)
                 .build();
-        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(resultDto);
+        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(playerDto);
         //when
         ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.checkResult(hash);
         //then
@@ -58,14 +58,14 @@ class ResultAnnouncerFacadeTest {
         String hash = "123";
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
                 .resultAnnouncerFacade(resultCheckerFacade, responseRepository, Clock.systemUTC());
-        ResultDto resultDto = ResultDto.builder()
+        PlayerDto playerDto = PlayerDto.builder()
                 .hash("123")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 9, 0))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(resultDto);
+        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(playerDto);
         //when
         ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.checkResult(hash);
         //then
@@ -89,14 +89,14 @@ class ResultAnnouncerFacadeTest {
         Clock clock = Clock.fixed(LocalDateTime.of(2026, 2, 7, 12, 0, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
                 .resultAnnouncerFacade(resultCheckerFacade, responseRepository, clock);
-        ResultDto resultDto = ResultDto.builder()
+        PlayerDto playerDto = PlayerDto.builder()
                 .hash("123")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 9, 0))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(resultDto);
+        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(playerDto);
         //when
         ResultAnnouncerResponseDto resultAnnouncerResponseDto = resultAnnouncerFacade.checkResult(hash);
         //then
@@ -132,14 +132,14 @@ class ResultAnnouncerFacadeTest {
         //given
         LocalDateTime drawDate = LocalDateTime.of(2026, 2, 7, 12, 0, 0);
         String hash = "123";
-        ResultDto resultDto = ResultDto.builder()
+        PlayerDto playerDto = PlayerDto.builder()
                 .hash("123")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 9, 0))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(resultDto);
+        when(resultCheckerFacade.findByTicketId(hash)).thenReturn(playerDto);
 
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration()
                 .resultAnnouncerFacade(resultCheckerFacade, responseRepository, Clock.systemUTC());

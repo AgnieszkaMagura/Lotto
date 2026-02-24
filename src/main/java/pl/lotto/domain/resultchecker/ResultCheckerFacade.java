@@ -6,12 +6,13 @@ import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayersDto;
-import pl.lotto.domain.resultchecker.dto.ResultDto;
+import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.util.List;
 import java.util.Set;
 
 import static pl.lotto.domain.resultchecker.ResultCheckerMapper.mapPlayersToResults;
+import static pl.lotto.domain.resultchecker.ResultCheckerMapper.mapToPlayerDto;
 
 @AllArgsConstructor
 public class ResultCheckerFacade {
@@ -40,15 +41,20 @@ public class ResultCheckerFacade {
                 .build();
     }
 
-    public ResultDto findByTicketId(String ticketId) {
-        Player player = playerRepository.findById(ticketId)
-                .orElseThrow(() -> new PlayerResultNotFoundException("Not found for id: " + ticketId));
-        return ResultDto.builder()
-                .hash(ticketId)
-                .numbers(player.numbers())
-                .hitNumbers(player.hitNumbers())
-                .drawDate(player.drawDate())
-                .isWinner(player.isWinner())
-                .build();
+    public PlayerDto findByTicketId(String ticketId) {
+        Player player = playerRepository.findById(ticketId).orElse(null);
+        if (player == null) {
+            List<String> ticketIds = numberReceiverFacade.retrieveAllTicketsByNextDrawDate()
+                    .stream()
+                    .map(TicketDto::hash)
+                    .toList();
+            boolean isTicketWaitingForDraw = ticketIds.stream()
+                    .anyMatch(hashFromList -> ticketIds.contains(ticketId));
+            if (isTicketWaitingForDraw) {
+                throw new PlayerResultNotFoundException("Your ticket is waiting for the draw, please come back after Saturday 12:00 p.m.");
+            }
+            throw new PlayerResultNotFoundException(ticketId);
+        }
+        return mapToPlayerDto(player);
     }
 }
