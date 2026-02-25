@@ -8,12 +8,26 @@ import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 public class NumberGeneratorConfiguration {
 
     @Bean
-    WinningNumbersGeneratorFacade winningNumbersGeneratorFacade(WinningNumbersRepository winningNumbersRepository, NumberReceiverFacade numberReceiverFacade, RandomNumberGenerable randomNumberGenerator, WinningNumbersGeneratorFacadeConfigurationProperties properties) {
+    WinningNumbersGeneratorFacade winningNumbersGeneratorFacade(
+            WinningNumbersRepository winningNumbersRepository,
+            NumberReceiverFacade numberReceiverFacade,
+            RandomNumberGenerable randomNumberGenerator,
+            WinningNumbersGeneratorFacadeConfigurationProperties properties
+    ) {
         WinningNumberValidator winningNumberValidator = new WinningNumberValidator();
-        return new WinningNumbersGeneratorFacade(randomNumberGenerator, winningNumberValidator, winningNumbersRepository, numberReceiverFacade, properties);
+        return new WinningNumbersGeneratorFacade(
+                randomNumberGenerator,
+                winningNumberValidator,
+                winningNumbersRepository,
+                numberReceiverFacade,
+                properties
+        );
     }
 
-    WinningNumbersGeneratorFacade createForTest(RandomNumberGenerable generator, WinningNumbersRepository winningNumbersRepository, NumberReceiverFacade numberReceiverFacade) {
+    WinningNumbersGeneratorFacade createForTest(RandomNumberGenerable generator,
+                                                WinningNumbersRepository winningNumbersRepository,
+                                                NumberReceiverFacade numberReceiverFacade
+    ) {
         WinningNumbersGeneratorFacadeConfigurationProperties properties = WinningNumbersGeneratorFacadeConfigurationProperties.builder()
                 .upperBand(99)
                 .lowerBand(1)

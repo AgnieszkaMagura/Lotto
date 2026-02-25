@@ -6,7 +6,7 @@ import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayersDto;
-import pl.lotto.domain.resultchecker.dto.ResultDto;
+import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,29 +51,29 @@ class ResultCheckerFacadeTest {
         //when
         PlayersDto playersDto = resultCheckerFacade.generateResults();
         //then
-        List<ResultDto> results = playersDto.results();
-        ResultDto resultDto = ResultDto.builder()
+        List<PlayerDto> results = playersDto.results();
+        PlayerDto playerDto = PlayerDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        ResultDto resultDto1 = ResultDto.builder()
+        PlayerDto playerDto1 = PlayerDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        ResultDto resultDto2 = ResultDto.builder()
+        PlayerDto playerDto2 = PlayerDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        assertThat(results).contains(resultDto, resultDto1, resultDto2);
+        assertThat(results).contains(playerDto, playerDto1, playerDto2);
         String message = playersDto.message();
         assertThat(message).isEqualTo("Winners succeeded to retrieve");
 
@@ -141,15 +141,15 @@ class ResultCheckerFacadeTest {
         resultCheckerFacade.generateResults();
         //when
 
-        ResultDto resultDto = resultCheckerFacade.findByTicketId(hash);
+        PlayerDto playerDto = resultCheckerFacade.findByTicketId(hash);
         //then
-        ResultDto expectedResult = ResultDto.builder()
+        PlayerDto expectedResult = PlayerDto.builder()
                 .hash(hash)
                 .numbers(Set.of(7, 8, 9, 10, 11, 12))
                 .hitNumbers(Set.of())
                 .drawDate(drawDate)
                 .isWinner(false)
                 .build();
-        assertThat(resultDto).isEqualTo(expectedResult);
+        assertThat(playerDto).isEqualTo(expectedResult);
     }
 }
