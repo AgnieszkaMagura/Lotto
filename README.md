@@ -6,84 +6,46 @@ A robust, production-ready backend system for a lottery service built with **Jav
 
 * **Number Receiver:** Accepts user numbers, validates them (6 numbers in range 1-99), and issues a unique Ticket ID.
 * **Number Generator:** Fetches winning numbers from an external HTTP server (simulated via WireMock in tests).
-* **Result Checker:** Automatically matches user tickets against winning numbers for specific draw dates.
+* **Result Checker:** Automatically matches user tickets against winning numbers for specific draw dates every Saturday at 12pm.
 * **Result Announcer:** Provides a clear "win/loss" status based on specific Ticket IDs.
 * **Scheduled Draws:** Automated logic for determining the next draw date.
 
----
+## 🏗️ Architecture
 
-## 🏗 Architecture & Design
+The project follows **Hexagonal Architecture** and **Clean Architecture** principles, ensuring a strict separation between the core domain logic and external infrastructure.
 
-The project follows a **Modular Monolith** pattern with a strong emphasis on the **Facade Pattern**. Each module is self-contained, ensuring that business logic is decoupled from infrastructure and other domains.
-
-```mermaid
-graph TD
-    User((User))
-
-    subgraph "Lotto System (Spring Boot)"
-        NRF[NumberReceiverFacade]
-        NGF[NumberGeneratorFacade]
-        RCF[ResultCheckerFacade]
-        RAF[ResultAnnouncerFacade]
-        
-        %% Scheduler component
-        SCH[[ResultCheckerScheduler]]
-        
-        DB[(MongoDB)]
-    end
-
-    subgraph "External Services"
-        RHS[Remote HTTP Server]
-    end
-
-    %% User interactions
-    User -->|"1. POST /inputNumbers"| NRF
-    NRF -->|"Save Ticket"| DB
-    
-    %% Scheduled process
-    SCH -->|"Trigger every Saturday"| NGF
-    SCH -->|"Generate Results"| RCF
-    
-    %% Internal flow & External API
-    NGF -->|"2. Fetch Winning Numbers"| RHS
-    NGF -->|"Save Winning Numbers"| DB
-    
-    RCF -->|"3. Match Tickets"| NRF
-    RCF -->|"3. Match Tickets"| NGF
-    RCF -->|"Save Computed Result"| DB
-    
-    User -->|"4. GET /results/{id}"| RAF
-    RAF -->|"Fetch Final Result"| RCF
-```
+![Architecture Diagram](architecture/lotto-architecture-security-v2.png)
+<img width="4200" height="3537" alt="lotto-architecture-security-v2" src="https://github.com/user-attachments/assets/16f993ca-fb47-4e9a-9d1a-24386b238c12" />
 
 
-### Domain Modules:
-1.  **`number-receiver`**: Handles input validation and ticket persistence.
-2.  **`number-generator`**: Manages the generation and retrieval of winning numbers.
-3.  **`result-checker`**: Orchestrates the comparison logic between tickets and results.
-4.  **`result-announcer`**: Handles the presentation and caching of results for the user.
+### 🔐 Security Implementation (JWT)
+The application uses **Spring Security** combined with **JSON Web Tokens (JWT)** for robust authentication:
+* **Registration**: Password hashing is handled via **BCrypt** through the `LoginAndRegisterFacade`.
+* **Authentication**: The `/token` endpoint issues a JWT for authorized access.
+* **Authorization**: The `JwtAuthTokenFilter` validates tokens and establishes the security context for protected resources.
 
----
+### 🌐 API Endpoints
 
-## 🛠 Tech Stack
+| Module | Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Security** | `POST` | `/register` | **Public** |  Create a new user account. |
+| **Security** | `POST` | `/token` | **Public** | Authenticate and retrieve JWT. |
+| **Number Receiver** | `POST` | `/inputNumbers` | **Authenticated** | Submit user lottery numbers. |
+| **Result Announcer** | `GET` | `/results/{id}` | **Authenticated** | Check draw result by ticket ID. |
 
-* **Core:** Java 17, Spring Boot 2.7.8
-* **Database:** MongoDB (via Spring Data MongoDB)
-* **Documentation:** Swagger / Springfox 3.0.0
-* **Utilities:** Lombok, Spring Validation, Awaitility
-* **Build Tool:** Maven
+### 🧩 Domain Highlights
+* **Number Receiver**: Acts as the central "Source of Truth" for ticket draw dates.
+* **Winning Numbers Generator**: Fetches **6 unique numbers** from a remote service via `RestTemplate`.
+* **Result Checker**: Automatically validates tickets against winning numbers after the draw.
 
----
-
-## 🧪 Testing Excellence
-
-This project follows a **Test-Driven Development (TDD)** approach, utilizing a sophisticated testing stack to ensure 100% reliability:
-
-* **Testcontainers (MongoDB):** Integration tests run against a real MongoDB instance in a Docker container, providing a production-like environment.
+## 🛠️ Technologies & Skills
+* * **Testcontainers (MongoDB):** Integration tests run against a real MongoDB instance in a Docker container, providing a production-like environment.
 * **WireMock:** Used to mock the external "Remote HTTP Server" for number generation, allowing for reliable testing of external API integrations.
 * **Awaitility:** Handles testing of asynchronous processes and schedulers.
 * **AssertJ & Mockito:** For expressive, readable assertions and clean unit mocks.
-## 🛠️ Technologies & Skills
+
+## 🧪 Testing Excellence
+This project follows a **Test-Driven Development (TDD)** approach, utilizing a sophisticated testing stack to ensure 100% reliability:
 
 ### Core
 ![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)
@@ -113,17 +75,7 @@ The application was built with a strong emphasis on code quality:
 * **Mocking:** Simulating external job servers with **WireMock**.
 * **Real Environment:** Using **Testcontainers** to run integration tests on actual MongoDB instances.
 
-## 📡 API Endpoints
-Once the application is running, you can access the interactive Swagger UI at:
-👉 http://localhost:8080/swagger-ui/index.html
-
-| Method | Endpoint | Description | 
-| :--- | :--- | :--- | 
-| `POST` | `/inputNumbers` | Submit your 6 numbers. Returns a Ticket ID. |
-| `GET` | `/results/{id}` | Check if your ticket won. |
-
 ## 📦 Getting Started
-
 1. Clone the repository:
    git clone [https://github.com/AgnieszkaMagura/Lotto.git](https://github.com/AgnieszkaMagura/Lotto.git)
 
@@ -132,6 +84,8 @@ Once the application is running, you can access the interactive Swagger UI at:
 3. Build and run the app: ./mvnw spring-boot:run or via your IDE.
 
 4. API Documentation is available at: http://localhost:8000/swagger-ui/index.html (port depends on your local configuration).
+5. Once the application is running, you can access the interactive Swagger UI at:
+👉 http://localhost:8080/swagger-ui/index.html
 
 ## 🤝 Contact
 **Author:** Agnieszka Magura  
