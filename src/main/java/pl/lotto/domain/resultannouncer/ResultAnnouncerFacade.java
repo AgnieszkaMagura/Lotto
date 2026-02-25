@@ -1,6 +1,7 @@
 package pl.lotto.domain.resultannouncer;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
@@ -19,6 +20,7 @@ public class ResultAnnouncerFacade {
     private final ResponseRepository responseRepository;
     private final Clock clock;
 
+    @Cacheable(cacheNames = "results")
     public ResultAnnouncerResponseDto checkResult(String hash) {
         if (responseRepository.existsById(hash)) {
             Optional<ResultResponse> resultResponseCached = responseRepository.findById(hash);
