@@ -41,13 +41,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
-        httpSecurity.authorizeRequests()
+        httpSecurity
+                .cors().and()
+                .authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/token/**").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/inputNumbers").permitAll()
+                .antMatchers("/results/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable()

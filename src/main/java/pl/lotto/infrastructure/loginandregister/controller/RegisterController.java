@@ -1,6 +1,5 @@
 package pl.lotto.infrastructure.loginandregister.controller;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.lotto.domain.loginandregister.LoginAndRegisterFacade;
 import pl.lotto.domain.loginandregister.dto.RegisterUserDto;
 import pl.lotto.domain.loginandregister.dto.RegistrationResultDto;
-
-
-import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
