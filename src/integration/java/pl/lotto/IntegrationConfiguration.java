@@ -18,7 +18,6 @@ public class IntegrationConfiguration {
     @Primary
     AdjustableClock clock() {
         return AdjustableClock.ofLocalDateAndLocalTime(LocalDate.
-                of(2026, 2, 4), LocalTime.of(10, 0), ZoneId.systemDefault());
+                of(2026, 3, 11), LocalTime.of(10, 0), ZoneId.systemDefault());
     }
-
 }
