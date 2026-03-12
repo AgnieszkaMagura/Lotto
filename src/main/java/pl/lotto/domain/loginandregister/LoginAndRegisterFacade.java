@@ -21,6 +21,9 @@ public class LoginAndRegisterFacade {
     }
 
     public RegistrationResultDto register(RegisterUserDto registerUserDto) {
+        if (repository.existsByUsername(registerUserDto.username())) {
+            throw new UserAlreadyExistsException("User with username " + registerUserDto.username() + " already exists");
+        }
         final User user = User.builder()
                 .username(registerUserDto.username())
                 .password(registerUserDto.password())
