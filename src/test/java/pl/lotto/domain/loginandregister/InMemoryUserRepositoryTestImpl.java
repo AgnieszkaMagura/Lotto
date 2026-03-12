@@ -23,6 +23,11 @@ public class InMemoryUserRepositoryTestImpl implements LoginRepository{
     }
 
     @Override
+    public boolean existsByUsername(String username) {
+        return false;
+    }
+
+    @Override
     public <S extends User> S insert(S entity) {
         return null;
     }
