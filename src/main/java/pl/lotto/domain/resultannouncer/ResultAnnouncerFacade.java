@@ -48,6 +48,7 @@ public class ResultAnnouncerFacade {
                 .hash(responseDto.hash())
                 .numbers(responseDto.numbers())
                 .hitNumbers(responseDto.hitNumbers())
+                .winningNumbers(responseDto.winningNumbers())
                 .drawDate(responseDto.drawDate())
                 .isWinner(responseDto.isWinner())
                 .build();
@@ -58,6 +59,7 @@ public class ResultAnnouncerFacade {
                 .hash(playerDto.hash())
                 .numbers(playerDto.numbers())
                 .hitNumbers(playerDto.hitNumbers())
+                .winningNumbers(playerDto.winningNumbers())
                 .drawDate(playerDto.drawDate())
                 .isWinner(playerDto.isWinner())
                 .build();

@@ -9,6 +9,7 @@ import java.util.Set;
 public record PlayerDto(String hash,
                         Set<Integer> numbers,
                         Set<Integer> hitNumbers,
+                        Set<Integer> winningNumbers,
                         LocalDateTime drawDate,
                         boolean isWinner
 ) {
