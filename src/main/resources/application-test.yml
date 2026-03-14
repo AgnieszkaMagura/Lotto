@@ -1,5 +1,5 @@
 lotto:
   result-checker:
-    lotteryRunOccurrence: "*/10 * * * * *" # Losowanie co 10 sekund
+    lotteryRunOccurrence: "*/5 * * * * *" # Losowanie co 10 sekund
   number-generator:
-    lotteryRunOccurrence: "*/10 * * * * *" # Losowanie co 10 sekund
+    lotteryRunOccurrence: "*/7 * * * * *" # Losowanie co 10 sekund

@@ -4,6 +4,7 @@ import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class ResultCheckerMapper {
@@ -14,6 +15,7 @@ class ResultCheckerMapper {
                         .hash(player.hash())
                         .numbers(player.numbers())
                         .hitNumbers(player.hitNumbers())
+                        .winningNumbers(player.winningNumbers())
                         .drawDate(player.drawDate())
                         .isWinner(player.isWinner())
                         .build())
@@ -29,11 +31,13 @@ class ResultCheckerMapper {
                         .build())
                 .toList();
     }
+
     static PlayerDto mapToPlayerDto(Player player) {
         return PlayerDto.builder()
                 .hash(player.hash())
                 .numbers(player.numbers())
                 .hitNumbers(player.hitNumbers())
+                .winningNumbers(player.winningNumbers())
                 .drawDate(player.drawDate())
                 .isWinner(player.isWinner())
                 .build();
