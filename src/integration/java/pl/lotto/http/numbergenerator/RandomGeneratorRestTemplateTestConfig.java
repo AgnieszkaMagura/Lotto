@@ -17,6 +17,7 @@ public class RandomGeneratorRestTemplateTestConfig extends RandomGeneratorClient
                         .build();
 
         RestTemplate restTemplate = restTemplate(errorHandler(), properties);
+
         return remoteNumberGeneratorClient(restTemplate, properties);
     }
 }

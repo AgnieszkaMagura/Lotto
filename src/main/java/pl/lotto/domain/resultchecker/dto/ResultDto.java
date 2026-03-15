@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Builder
-public record PlayerDto(String hash,
+public record ResultDto(String hash,
                         Set<Integer> numbers,
                         Set<Integer> hitNumbers,
-                        Set<Integer> winningNumbers,
                         LocalDateTime drawDate,
-                        boolean isWinner
-) {
+                        boolean isWinner,
+                        Set<Integer> wonNumbers
+                        ) {
 }

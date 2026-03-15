@@ -16,7 +16,7 @@ import pl.lotto.domain.numberreceiver.dto.NumberReceiverResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.PlayerResultNotFoundException;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.domain.resultchecker.dto.ResultDto;
 import pl.lotto.infrastructure.loginandregister.controller.dto.JwtResponseDto;
 
 import java.time.Duration;
@@ -137,7 +137,7 @@ public class UserPlayedLottoAndWonIntegrationTest extends BaseIntegrationTest {
                 .pollInterval(Duration.ofSeconds(1L))
                 .until(() -> {
                             try {
-                                PlayerDto result = resultCheckerFacade.findByTicketId(ticketId);
+                                ResultDto result = resultCheckerFacade.findByTicketId(ticketId);
                                 return !result.numbers().isEmpty();
                             } catch (PlayerResultNotFoundException exception) {
                                 return false;

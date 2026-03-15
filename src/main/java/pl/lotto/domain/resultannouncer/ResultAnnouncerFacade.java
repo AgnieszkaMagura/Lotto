@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
-import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.domain.resultchecker.dto.ResultDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -28,13 +28,13 @@ public class ResultAnnouncerFacade {
                 return new ResultAnnouncerResponseDto(ResultMapper.mapToDto(resultResponseCached.get()), ALREADY_CHECKED.info);
             }
         }
-        PlayerDto playerDto = resultCheckerFacade.findByTicketId(hash);
-        if (playerDto == null) {
+        ResultDto resultDto = resultCheckerFacade.findByTicketId(hash);
+        if (resultDto == null) {
             return new ResultAnnouncerResponseDto(null, HASH_DOES_NOT_EXIST_MESSAGE.info);
         }
-        ResponseDto responseDto = buildResponseDto(playerDto);
-        responseRepository.save(buildResponse(responseDto));
-        if (responseRepository.existsById(hash) && !isAfterResultAnnouncementTime(playerDto)) {
+        ResponseDto responseDto = buildResponseDto(resultDto);
+        responseRepository.save(buildResponse(responseDto, LocalDateTime.now(clock)));
+        if (responseRepository.existsById(hash) && !isAfterResultAnnouncementTime(resultDto)) {
             return new ResultAnnouncerResponseDto(responseDto, WAIT_MESSAGE.info);
         }
         if (resultCheckerFacade.findByTicketId(hash).isWinner()) {
@@ -43,30 +43,31 @@ public class ResultAnnouncerFacade {
         return new ResultAnnouncerResponseDto(responseDto, LOSE_MESSAGE.info);
     }
 
-    private static ResultResponse buildResponse(ResponseDto responseDto) {
+    private static ResultResponse buildResponse(ResponseDto responseDto, LocalDateTime now) {
         return ResultResponse.builder()
                 .hash(responseDto.hash())
                 .numbers(responseDto.numbers())
                 .hitNumbers(responseDto.hitNumbers())
-                .winningNumbers(responseDto.winningNumbers())
+                .wonNumbers(responseDto.wonNumbers())
                 .drawDate(responseDto.drawDate())
                 .isWinner(responseDto.isWinner())
+                .createdDate(now)
                 .build();
     }
 
-    private static ResponseDto buildResponseDto(PlayerDto playerDto) {
+    private static ResponseDto buildResponseDto(ResultDto resultDto) {
         return ResponseDto.builder()
-                .hash(playerDto.hash())
-                .numbers(playerDto.numbers())
-                .hitNumbers(playerDto.hitNumbers())
-                .winningNumbers(playerDto.winningNumbers())
-                .drawDate(playerDto.drawDate())
-                .isWinner(playerDto.isWinner())
+                .hash(resultDto.hash())
+                .numbers(resultDto.numbers())
+                .hitNumbers(resultDto.hitNumbers())
+                .drawDate(resultDto.drawDate())
+                .isWinner(resultDto.isWinner())
+                .wonNumbers(resultDto.wonNumbers())
                 .build();
     }
 
-    private boolean isAfterResultAnnouncementTime(PlayerDto playerDto) {
-        LocalDateTime announcementDateTime = playerDto.drawDate();
+    private boolean isAfterResultAnnouncementTime(ResultDto resultDto) {
+        LocalDateTime announcementDateTime = resultDto.drawDate();
         return LocalDateTime.now(clock).isAfter(announcementDateTime);
     }
 }
