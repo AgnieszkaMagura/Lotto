@@ -9,7 +9,7 @@ public class ResultMapper {
                 .hash(resultResponse.hash())
                 .hitNumbers(resultResponse.hitNumbers())
                 .numbers(resultResponse.numbers())
-                .winningNumbers(resultResponse.winningNumbers())
+                .wonNumbers(resultResponse.wonNumbers())
                 .isWinner(resultResponse.isWinner())
                 .build();
     }

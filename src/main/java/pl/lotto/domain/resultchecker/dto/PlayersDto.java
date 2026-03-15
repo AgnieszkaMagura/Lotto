@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 public record PlayersDto(
-        List<PlayerDto> results,
+        List<ResultDto> results,
         String message
 ) {
 }

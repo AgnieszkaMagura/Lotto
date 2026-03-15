@@ -6,7 +6,7 @@ import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayersDto;
-import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.domain.resultchecker.dto.ResultDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,29 +51,32 @@ class ResultCheckerFacadeTest {
         //when
         PlayersDto playersDto = resultCheckerFacade.generateResults();
         //then
-        List<PlayerDto> results = playersDto.results();
-        PlayerDto playerDto = PlayerDto.builder()
+        List<ResultDto> results = playersDto.results();
+        ResultDto resultDto = ResultDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
+                .wonNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .build();
-        PlayerDto playerDto1 = PlayerDto.builder()
+        ResultDto resultDto1 = ResultDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                .wonNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        PlayerDto playerDto2 = PlayerDto.builder()
+        ResultDto resultDto2 = ResultDto.builder()
                 .hash("001")
                 .numbers(Set.of(1, 2, 3, 4, 5, 6))
                 .hitNumbers(Set.of(1, 2, 3, 4, 5, 6))
+                .wonNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .drawDate(drawDate)
                 .isWinner(true)
                 .build();
-        assertThat(results).contains(playerDto, playerDto1, playerDto2);
+        assertThat(results).contains(resultDto, resultDto1, resultDto2);
         String message = playersDto.message();
         assertThat(message).isEqualTo("Winners succeeded to retrieve");
 
@@ -115,6 +118,7 @@ class ResultCheckerFacadeTest {
     public void it_should_generate_result_with_correct_credentials() {
         //given
         LocalDateTime drawDate = LocalDateTime.of(2026, 2, 7, 12, 0, 0);
+        Set<Integer> winningNumbers = Set.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .build());
@@ -141,15 +145,16 @@ class ResultCheckerFacadeTest {
         resultCheckerFacade.generateResults();
         //when
 
-        PlayerDto playerDto = resultCheckerFacade.findByTicketId(hash);
+        ResultDto resultDto = resultCheckerFacade.findByTicketId(hash);
         //then
-        PlayerDto expectedResult = PlayerDto.builder()
+        ResultDto expectedResult = ResultDto.builder()
                 .hash(hash)
                 .numbers(Set.of(7, 8, 9, 10, 11, 12))
                 .hitNumbers(Set.of())
                 .drawDate(drawDate)
                 .isWinner(false)
+                .wonNumbers(winningNumbers)
                 .build();
-        assertThat(playerDto).isEqualTo(expectedResult);
+        assertThat(resultDto).isEqualTo(expectedResult);
     }
 }

@@ -14,7 +14,7 @@ class WinnersRetriever {
         return allTicketsByDate.stream()
                 .map(ticket -> {
                     Set<Integer> hitNumbers = calculateHits(winningNumbers, ticket);
-                    return buildResult(ticket, hitNumbers);
+                    return buildResult(ticket, hitNumbers, winningNumbers);
                 })
                 .toList();
     }
@@ -25,7 +25,7 @@ class WinnersRetriever {
                 .collect(Collectors.toSet());
     }
 
-    private Player buildResult(Ticket ticket, Set<Integer> hitNumbers) {
+    private Player buildResult(Ticket ticket, Set<Integer> hitNumbers, Set<Integer> winningNumbers) {
         Player.PlayerBuilder builder = Player.builder();
         if (isWinner(hitNumbers)) {
             builder.isWinner(true);
@@ -35,6 +35,7 @@ class WinnersRetriever {
                 .numbers(ticket.numbers())
                 .hitNumbers(hitNumbers)
                 .drawDate(ticket.drawDate())
+                .wonNumbers(winningNumbers)
                 .build();
     }
 

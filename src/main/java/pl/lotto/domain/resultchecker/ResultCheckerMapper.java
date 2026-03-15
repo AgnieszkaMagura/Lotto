@@ -1,23 +1,23 @@
 package pl.lotto.domain.resultchecker;
 
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
-import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.domain.resultannouncer.dto.ResponseDto;
+import pl.lotto.domain.resultchecker.dto.ResultDto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 class ResultCheckerMapper {
 
-    static List<PlayerDto> mapPlayersToResults(List<Player> players) {
+    static List<ResultDto> mapPlayersToResults(List<Player> players) {
         return players.stream()
-                .map(player -> PlayerDto.builder()
+                .map(player -> ResultDto.builder()
                         .hash(player.hash())
                         .numbers(player.numbers())
                         .hitNumbers(player.hitNumbers())
-                        .winningNumbers(player.winningNumbers())
                         .drawDate(player.drawDate())
                         .isWinner(player.isWinner())
+                        .wonNumbers(player.wonNumbers())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -30,16 +30,5 @@ class ResultCheckerMapper {
                         .numbers(ticketDto.numbers())
                         .build())
                 .toList();
-    }
-
-    static PlayerDto mapToPlayerDto(Player player) {
-        return PlayerDto.builder()
-                .hash(player.hash())
-                .numbers(player.numbers())
-                .hitNumbers(player.hitNumbers())
-                .winningNumbers(player.winningNumbers())
-                .drawDate(player.drawDate())
-                .isWinner(player.isWinner())
-                .build();
     }
 }

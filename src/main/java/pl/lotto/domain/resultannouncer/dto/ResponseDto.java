@@ -12,7 +12,7 @@ public record ResponseDto(
         @Id String hash,
         Set<Integer> numbers,
         Set<Integer> hitNumbers,
-        Set<Integer> winningNumbers,
+        Set<Integer> wonNumbers,
         LocalDateTime drawDate,
         boolean isWinner) implements Serializable {
 }
