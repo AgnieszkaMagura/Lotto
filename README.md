@@ -20,8 +20,7 @@ The system is designed with a focus on **security**, **scalability**, and **clea
 ## 🏗️ Architecture & Security
 
 The system is designed with a focus on Clean Architecture principles, ensuring that the domain logic remains isolated from external frameworks and databases.
-<img width="6557" height="6623" alt="lotto architecture security v2" src="https://github.com/user-attachments/assets/8fe62ad8-c962-430e-abea-5ad17b7d40d4" />
-
+<img width="850" alt="lotto architecture security v2" src="https://github.com/user-attachments/assets/8fe62ad8-c962-430e-abea-5ad17b7d40d4" />
 ## 🧩 Modular Monolith & Facades
 The application follows a **Modular Monolith** pattern. Each business capability (e.g., Number Receiver, Result Checker) is an independent module. Communication between modules happens strictly through **Facades**, which encapsulate internal logic and provide a clean API.
 
@@ -34,7 +33,7 @@ The application uses **Spring Security** combined with **JSON Web Tokens (JWT)**
 ## 🟢 Domain Logic & Ports (Green)
 * **Number Receiver:** Validates user numbers (6 in range 1-99) and generates unique Ticket IDs.
 
-* **Winning Generator:** Fetches winning numbers from an external service via a **Remote HTTP Clien.**
+* **Winning Generator:** Fetches winning numbers from an external service via a **Remote HTTP Clien**.
 
 * **Result Checker:** Automatically matches tickets against winning numbers for Saturday draws.
 
