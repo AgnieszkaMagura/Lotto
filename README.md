@@ -1,13 +1,11 @@
-# Lotto Project 🎰
-📝 Project Overview
+# 🎰 Lotto Project - Backend Service
+A robust, production-ready backend system for a lottery service built with **Java 17** and **Spring Boot**. This project demonstrates **Modular Monolith** design, **Hexagonal Architecture**, and advanced automated testing suites.
 
-A robust, production ready backend system for a lottery service built with **Java 17** and **Spring Boot 2.7.8**. This project demonstrates Clean Hexagonal Architecture, Domain-Driven Design (DDD) principles, and an advanced automated testing suite.
-
-
-**Lotto Project** is a modern, microservice-ready application based on a **Coupon Draw System**. It allows users to participate in a lottery by submitting their numbers and checking results after a scheduled draw.
-
-The system is designed with a focus on **security**, **scalability**, and **clean code**, ensuring that the entire process from ticket purchase to result announcement.It is fully automated and protected.
-
+## 🚀 Project Overview
+This repository contains the core business logic and infrastructure for the Lotto application. It handles user registration, secure ticket purchases, automated draws via schedulers, and real-time result verification.
+The system is designed with a focus on **security**, **scalability**, and **clean code**, ensuring that the entire process from ticket purchase to result announcement is fully automated and protected.
+* **Frontend Repository:** https://github.com/AgnieszkaMagura/lotto-frontend
+  
 ⚙️ How it works:
 1. **Ticket Submission**: Users send their 6 numbers to the system. Each ticket is assigned a unique ID and saved in the database.
 
@@ -64,20 +62,35 @@ The system is designed with a focus on **security**, **scalability**, and **clea
 * **Result Announcer:** Provides a clear "win/loss" status based on specific Ticket IDs.
 * **Scheduled Draws:** Automated logic for determining the next draw date.
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Security
 
-The project follows **Hexagonal Architecture** and **Clean Architecture** principles, ensuring a strict separation between the core domain logic and external infrastructure.
+The system is designed with a focus on Clean Architecture principles, ensuring that the domain logic remains isolated from external frameworks and databases.
+<img width="6557" height="6623" alt="lotto architecture security v2" src="https://github.com/user-attachments/assets/8fe62ad8-c962-430e-abea-5ad17b7d40d4" />
 
-![Architecture Diagram](architecture/lotto-architecture-security-v2.png)
+## 🧩 Modular Monolith & Facades
+The application follows a **Modular Monolith** pattern. Each business capability (e.g., Number Receiver, Result Checker) is an independent module. Communication between modules happens strictly through **Facades**, which encapsulate internal logic and provide a clean API.
 
-### 🔐 Security Implementation (JWT)
+## 🔐 Security Implementation (JWT)
 The application uses **Spring Security** combined with **JSON Web Tokens (JWT)** for robust authentication:
 * **Registration**: Password hashing is handled via **BCrypt** through the `LoginAndRegisterFacade`.
 * **Authentication**: The `/token` endpoint issues a JWT for authorized access.
 * **Authorization**: The `JwtAuthTokenFilter` validates tokens and establishes the security context for protected resources.
 
-### 🌐 API Endpoints
+## 🟢 Domain Logic & Ports (Green)
+* **Number Receiver:** Validates user numbers (6 in range 1-99) and generates unique Ticket IDs.
 
+* **Winning Generator:** Fetches winning numbers from an external service via a **Remote HTTP Clien.**
+
+* **Result Checker:** Automatically matches tickets against winning numbers for Saturday draws.
+
+* **Result Announcer:** Handles the logic of informing users about their winnings.
+
+## 🔵 Infrastructure & Adapters (Blue)
+* **MongoDB:** Primary storage for user accounts and ticket data.
+
+* **Redis:** High-performance cache used to store draw results and optimize response times.
+
+### 🌐 API Endpoints
 | Module | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | **Security** | `POST` | `/register` | **Public** |  Create a new user account. |
@@ -91,31 +104,73 @@ The application uses **Spring Security** combined with **JSON Web Tokens (JWT)**
 * **Result Checker**: Automatically validates tickets against winning numbers after the draw.
 
 ## 🛠️ Technologies & Skills
-* **Testcontainers (MongoDB):** Integration tests run against a real MongoDB instance in a Docker container, providing a production-like environment.
-* **WireMock:** Used to mock the external "Remote HTTP Server" for number generation, allowing for reliable testing of external API integrations.
-* **Awaitility:** Handles testing of asynchronous processes and schedulers.
-* **AssertJ & Mockito:** For expressive, readable assertions and clean unit mocks.
+| Category | Technologies |
+| :--- | :--- |
+| **Core** | Java 17, Spring Boot, Spring Security, JWT, Maven |
+| **Database** | MongoDB, Redis |
+| **Infrastructure** | Docker, Spring Task (Scheduler) |
+| **Testing** | JUnit 5, Mockito, Testcontainers, WireMock, Awaitility |
 
-## 🧪 Testing Excellence and Quality Assurance 
-This project follows a **Test-Driven Development (TDD)** approach, utilizing a sophisticated testing stack to ensure 100% reliability:
-The application was built with a strong emphasis on code quality:
-* **Asynchrony:** Testing scheduled tasks using **Awaitility**.
-* **Mocking:** Simulating external job servers with **WireMock**.
-* **Real Environment:** Using **Testcontainers** to run integration tests on actual MongoDB instances.
+## 🧪 Testing Excellence
+This project was built with a strong emphasis on **Quality Assurance:**
+* **Testcontainers:** Integration tests run against real **MongoDB** instances in Docker containers.
+* **WireMock:** Simulates the "Remote HTTP Server" for winning number generation to test external API reliability.
+* **Awaitility:** Used to test asynchronous scheduled tasks and verify they complete as expected.
 
 ## 📦 Getting Started
-1. Clone the repository:
-   git clone [https://github.com/AgnieszkaMagura/Lotto.git](https://github.com/AgnieszkaMagura/Lotto.git)
+1. Clone the repo: git clone https://github.com/AgnieszkaMagura/Lotto.git
+2. **Start Infrastructure:** docker-compose up -d (requires Docker Desktop).
+3. **Run Application:** ./mvnw spring-boot:run or via your IDE.
+4. **Swagger UI:** Access interactive documentation at http://localhost:8080/swagger-ui/index.html.
+---
 
-2. Spin up the infrastructure: docker-compose up (requires Docker Desktop).
+<div align="center">
+  <strong>🛠️ Backend Tech Stack</strong><br>
+  <img src="https://img.shields.io/badge/Architecture-Hexagonal-3498db?style=for-the-badge&logo=architecture" alt="Hexagonal Architecture">
+  <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 17">
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/Lombok-bc473a?style=for-the-badge&logo=java&logoColor=white" alt="Lombok">
+  <img src="https://img.shields.io/badge/Bean-Validation-009688?style=for-the-badge" alt="Bean Validation">
+  <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white" alt="Spring Security">
+  <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=json-web-tokens&logoColor=white" alt="JWT">
+  <br>
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</div>
 
-3. Build and run the app: ./mvnw spring-boot:run or via your IDE.
- 
-4. Once the application is running, you can access the interactive Swagger UI at:
-👉 http://localhost:8080/swagger-ui/index.html
+<br>
 
-## 🤝 Contact
-**Author:** Agnieszka Magura  
-**LinkedIn:** [Agnieszka Magura](https://www.linkedin.com/in/agnieszka-magura-0714241a8/)
+<div align="center">
+  <strong>💻 Frontend Stack</strong><br>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white" alt="Axios">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+</div>
 
-If you like this project, please consider giving it a ⭐!
+<br>
+
+<div align="center">
+  <strong>🧪 Testing Tools</strong><br>
+  <img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit5">
+  <img src="https://img.shields.io/badge/Mockito-ff9c1e?style=for-the-badge" alt="Mockito">
+  <img src="https://img.shields.io/badge/Testcontainers-61696e?style=for-the-badge&logo=testcontainers&logoColor=white" alt="Testcontainers">
+  <img src="https://img.shields.io/badge/Wiremock-000000?style=for-the-badge&logo=wiremock&logoColor=white" alt="Wiremock">
+  <img src="https://img.shields.io/badge/Awaitility-3498db?style=for-the-badge" alt="Awaitility">
+</div>
+
+<br>
+
+<div align="center">
+  <h3>🤝 Contact</h3>
+  <em>Designed with ❤️ by <strong>Agnieszka Magura</strong></em><br>
+  <a href="https://github.com/AgnieszkaMagura" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+  </a>
+  <a href="https://www.linkedin.com/in/agnieszka-magura-0714241a8/" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+  </a>
+  <br><br>
+  If you like this project, please consider giving it a ⭐!
+</div>
