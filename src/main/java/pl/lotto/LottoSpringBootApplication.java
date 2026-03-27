@@ -9,6 +9,8 @@ import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacadeConfiguratio
 import pl.lotto.infrastructure.numbergenerator.http.RandomNumberGeneratorRestTemplateConfigurationProperties;
 import pl.lotto.infrastructure.security.jwt.JwtConfigurationProperties;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableConfigurationProperties({WinningNumbersGeneratorFacadeConfigurationProperties.class,
         RandomNumberGeneratorRestTemplateConfigurationProperties.class, JwtConfigurationProperties.class})
@@ -17,6 +19,7 @@ import pl.lotto.infrastructure.security.jwt.JwtConfigurationProperties;
 public class LottoSpringBootApplication {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
         SpringApplication.run(LottoSpringBootApplication.class, args);
     }
 }
