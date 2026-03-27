@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: test
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:63792}
@@ -19,7 +17,7 @@ spring:
 
 lotto:
   result-checker:
-    lotteryRunOccurrence: "0 55 11 * * 6"
+    lotteryRunOccurrence: "30 0 12 * * SAT"
   number-generator:
     lotteryRunOccurrence: "0 0 12 * * 6"
     facade:

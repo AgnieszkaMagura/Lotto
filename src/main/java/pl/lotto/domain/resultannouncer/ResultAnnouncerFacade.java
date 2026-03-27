@@ -20,7 +20,7 @@ public class ResultAnnouncerFacade {
     private final ResponseRepository responseRepository;
     private final Clock clock;
 
-//    @Cacheable(cacheNames = "results")
+    @Cacheable(cacheNames = "results")
     public ResultAnnouncerResponseDto checkResult(String hash) {
         if (responseRepository.existsById(hash)) {
             Optional<ResultResponse> resultResponseCached = responseRepository.findById(hash);
