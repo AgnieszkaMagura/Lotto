@@ -1,7 +1,7 @@
 spring:
   redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:63792}
+    host: ${REDIS_HOST:redis}
+    port: ${REDIS_PORT:6379}
   cache:
     type: redis
     redis:

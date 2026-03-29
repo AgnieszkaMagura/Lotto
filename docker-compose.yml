@@ -45,9 +45,19 @@ services:
     ports:
       - '8000:8080'
     environment:
-      MONGO_USER: admin
-      MONGO_PASSWORD: admin
+      MONGO_USER: root
+      MONGO_PASSWORD: example
       MONGO_HOST: mongo
       MONGO_PORT: 27017
       MONGO_DB_NAME: lotto-web
       MONGO_AUTH_SOURCE: admin
+      SECRET_KEY: TwojBardzoDługiSekretnyKluczJWT123!
+
+  lotto-frontend:
+    container_name: lotto-frontend
+#   build: ../lotto-frontend
+#    image: lottofrontendzik:latest
+    image: 549710417026.dkr.ecr.eu-central-1.amazonaws.com/lotto-front:latest
+    restart: always
+    ports:
+      - '80:80'
